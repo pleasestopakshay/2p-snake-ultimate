@@ -1,0 +1,258 @@
+.settings-menu {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.settings-container {
+  max-width: 600px;
+  width: 100%;
+  padding: 40px;
+  border-radius: 15px;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.settings-title {
+  font-size: 2.5rem;
+  color: #68d391;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.back-button {
+  padding: 10px 20px;
+  background: transparent;
+  border: 2px solid #f56565;
+  color: #f56565;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: #f56565;
+  color: #1a202c;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setting-label {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #68d391;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.setting-select {
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #68d391;
+  border-radius: 8px;
+  color: #f7fafc;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.setting-select:hover {
+  background: rgba(104, 211, 145, 0.1);
+}
+
+.setting-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(104, 211, 145, 0.3);
+}
+
+.setting-select option {
+  background: #2d3748;
+  color: #f7fafc;
+}
+
+.checkbox-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #68d391;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #68d391;
+  border-radius: 4px;
+  background: transparent;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+  background: #68d391;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #1a202c;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.checkbox-custom:hover {
+  box-shadow: 0 0 0 3px rgba(104, 211, 145, 0.3);
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(104, 211, 145, 0.3);
+}
+
+.reset-button {
+  padding: 12px 24px;
+  background: transparent;
+  border: 2px solid #f56565;
+  color: #f56565;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-button:hover {
+  background: #f56565;
+  color: #1a202c;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  max-width: 400px;
+  width: 90%;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  color: #f56565;
+  margin-bottom: 20px;
+  font-family: 'Courier New', monospace;
+}
+
+.modal-text {
+  color: #a0aec0;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.confirm-button {
+  padding: 10px 20px;
+  background: #f56565;
+  border: none;
+  color: #f7fafc;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm-button:hover {
+  background: #e53e3e;
+}
+
+.cancel-button {
+  padding: 10px 20px;
+  background: transparent;
+  border: 2px solid #68d391;
+  color: #68d391;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-button:hover {
+  background: #68d391;
+  color: #1a202c;
+}
+
+@media (max-width: 768px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .settings-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .settings-title {
+    font-size: 2rem;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+}

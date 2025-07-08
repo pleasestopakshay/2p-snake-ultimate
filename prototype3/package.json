@@ -1,0 +1,14 @@
+{
+  "name": "snake-game-prototype3",
+  "version": "1.0.0",
+  "description": "2-Player Snake game with dual controls",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install"
+  },
+  "keywords": ["snake", "game", "react", "2-player", "multiplayer"],
+  "author": "",
+  "license": "MIT"
+}

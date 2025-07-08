@@ -1,0 +1,229 @@
+.snake-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+  padding: 0 20px;
+}
+
+.scores {
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.score {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px 0;
+}
+
+.score.player1 {
+  color: #4CAF50;
+}
+
+.score.player2 {
+  color: #2196F3;
+}
+
+.back-button {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.back-button:hover {
+  background: #d32f2f;
+}
+
+.game-board {
+  display: grid;
+  gap: 1px;
+  background: #333;
+  border: 2px solid #4CAF50;
+  padding: 10px;
+  border-radius: 10px;
+  width: 600px;
+  height: 600px;
+}
+
+.cell {
+  background: #222;
+  border-radius: 2px;
+  transition: all 0.1s ease;
+}
+
+/* Player 1 Snake (Green) */
+.snake1-head {
+  background: #4CAF50 !important;
+  box-shadow: 0 0 10px #4CAF50;
+  border-radius: 50%;
+}
+
+.snake1-body {
+  background: #8BC34A !important;
+  border-radius: 3px;
+}
+
+/* Player 2 Snake (Blue) */
+.snake2-head {
+  background: #2196F3 !important;
+  box-shadow: 0 0 10px #2196F3;
+  border-radius: 50%;
+}
+
+.snake2-body {
+  background: #64B5F6 !important;
+  border-radius: 3px;
+}
+
+.food {
+  background: #FF5722 !important;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #FF5722;
+  animation: pulse 1s infinite;
+}
+
+.power-up {
+  background: #FFD700 !important;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #FFD700;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.game-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid #4CAF50;
+}
+
+.game-message h2 {
+  margin-bottom: 20px;
+  color: #4CAF50;
+}
+
+.controls {
+  margin-top: 20px;
+}
+
+.controls p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.controls strong {
+  color: #4CAF50;
+}
+
+.game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.95);
+  color: white;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  border: 3px solid #f44336;
+}
+
+.game-over h2 {
+  margin-bottom: 10px;
+  color: #f44336;
+  font-size: 36px;
+}
+
+.game-over h3 {
+  margin-bottom: 20px;
+  color: #4CAF50;
+  font-size: 24px;
+}
+
+.final-scores {
+  margin-bottom: 30px;
+}
+
+.final-scores p {
+  font-size: 18px;
+  margin: 5px 0;
+  color: #fff;
+}
+
+.restart-button, .menu-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 10px;
+  transition: background 0.3s;
+}
+
+.restart-button:hover {
+  background: #45a049;
+}
+
+.menu-button {
+  background: #2196F3;
+}
+
+.menu-button:hover {
+  background: #1976D2;
+}
+
+@media (max-width: 768px) {
+  .game-board {
+    width: 90vw;
+    height: 90vw;
+    max-width: 500px;
+    max-height: 500px;
+  }
+  
+  .game-header {
+    max-width: 90vw;
+  }
+  
+  .scores {
+    flex-direction: row;
+    gap: 15px;
+  }
+  
+  .score {
+    font-size: 16px;
+  }
+}
