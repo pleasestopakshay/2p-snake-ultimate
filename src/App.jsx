@@ -76,7 +76,7 @@ function App() {
         <div className="game-mode-selector">
           <div className="modal-overlay">
             <div className="modal-content glassmorphism">
-              <h2 className="retro-text">SELECT GAME MODE</h2>
+              <h2 className="">SELECT GAME MODE</h2>
               <div className="mode-buttons">
                 <button 
                   className="mode-button glow-effect"

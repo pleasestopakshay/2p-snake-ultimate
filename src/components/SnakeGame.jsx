@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { saveHighScore, unlockLevel } from '../utils/storage'
 import './SnakeGame.css'
 
-const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, onBack }) => {
+const SnakeGame = ({ level, gameMode, settings, onLevelComplete, onBack }) => {
   const [gameState, setGameState] = useState('ready')
   const [snake1, setSnake1] = useState([{ x: 1, y: 1 }]) // Will be updated on mount
   const [snake2, setSnake2] = useState([{ x: 2, y: 1 }]) // Will be updated on mount
@@ -20,6 +20,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
   const [controlsChangeTimer, setControlsChangeTimer] = useState(0)
   const [showControlsWarning, setShowControlsWarning] = useState(false)
   const [levelCompleted, setLevelCompleted] = useState(false)
+  const [showRules, setShowRules] = useState(false)
   
   const gameLoopRef = useRef()
   const containerRef = useRef()
@@ -164,7 +165,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
   }, [generateRandomPosition, settings.powerUps])
   
   const generateSuperHardControls = useCallback(() => {
-    if (!superHardMode) return
+    if (!settings.randomizeKeys) return
     
     const randomKeys = [...keys].sort(() => Math.random() - 0.5).slice(0, 8)
     
@@ -185,7 +186,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
     setTimeout(() => {
       setShowControlsWarning(false)
     }, 3000)
-  }, [superHardMode]) // Removed 'keys' dependency
+  }, [settings.randomizeKeys]) // Updated dependency
   
   const moveSnake = useCallback((snake, direction, isPlayer1) => {
     if (gameStateRef.current !== 'playing' || (direction.x === 0 && direction.y === 0)) return snake
@@ -196,18 +197,15 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
     head.x += direction.x
     head.y += direction.y
     
-    if (settings.wallCollision) {
-      if (head.x < 0 || head.x >= gridWidth || head.y < 0 || head.y >= gridSize) {
-        setGameState('gameOver')
-        setGameOver(true)
-        setWinner(gameMode === '2p' ? (isPlayer1 ? 'Player 2' : 'Player 1') : null)
-        return snake
-      }
-    } else {
-      head.x = (head.x + gridWidth) % gridWidth
-      head.y = (head.y + gridSize) % gridSize
+    // Check for screen edge collision
+    if (head.x < 0 || head.x >= gridWidth || head.y < 0 || head.y >= gridSize) {
+      setGameState('gameOver')
+      setGameOver(true)
+      setWinner(gameMode === '2p' ? (isPlayer1 ? 'Player 2' : 'Player 1') : null)
+      return snake
     }
     
+    // Check for wall collision (# symbols in grid)
     if (level.grid[head.y] && head.x >= 0 && head.x < gridWidth && level.grid[head.y][head.x] === '#') {
       setGameState('gameOver')
       setGameOver(true)
@@ -269,7 +267,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
     }
     
     return newSnake
-  }, [settings.wallCollision, gridSize, level.grid, gameMode, spawnNewFoods, spawnPowerUp])
+  }, [gridSize, level.grid, gameMode, spawnNewFoods, spawnPowerUp])
   
   const gameLoop = useCallback(() => {
     if (gameStateRef.current !== 'playing') return
@@ -295,7 +293,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
     
     const key = e.key.toLowerCase()
     
-    if (superHardMode && superHardControls) {
+    if (settings.randomizeKeys && superHardControls) {
       if (key === superHardControls.up1 && direction1.y === 0) {
         setDirection1({ x: 0, y: -1 })
       } else if (key === superHardControls.down1 && direction1.y === 0) {
@@ -344,7 +342,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
     if (e.key === 'Escape') {
       onBack()
     }
-  }, [gameState, direction1, direction2, gameMode, superHardMode, superHardControls, onBack])
+  }, [gameState, direction1, direction2, gameMode, settings.randomizeKeys, superHardControls, onBack])
   
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress)
@@ -357,7 +355,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
   }, [gameLoop, gameSpeed])
   
   useEffect(() => {
-    if (superHardMode && gameState === 'playing') {
+    if (settings.randomizeKeys && gameState === 'playing') {
       const interval = setInterval(() => {
         setControlsChangeTimer(prev => {
           if (prev <= 1) {
@@ -370,7 +368,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
       
       return () => clearInterval(interval)
     }
-  }, [superHardMode, gameState, generateSuperHardControls])
+  }, [settings.randomizeKeys, gameState, generateSuperHardControls])
   
   useEffect(() => {
     // Initialize game on component mount
@@ -379,7 +377,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
     setSnake2(initialPositions.snake2)
     
     spawnInitialFoods()
-    if (superHardMode) {
+    if (settings.randomizeKeys) {
       generateSuperHardControls()
       setControlsChangeTimer(10)
     }
@@ -436,7 +434,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
     // Re-initialize foods and controls
     setTimeout(() => {
       spawnInitialFoods()
-      if (superHardMode) {
+      if (settings.randomizeKeys) {
         generateSuperHardControls()
         setControlsChangeTimer(10)
       }
@@ -512,7 +510,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
           </div>
         </div>
         
-        {superHardMode && gameState === 'playing' && (
+        {settings.randomizeKeys && gameState === 'playing' && (
           <div className="super-hard-info">
             <div className="controls-timer">
               CONTROLS CHANGE IN: {controlsChangeTimer}s
@@ -520,9 +518,18 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
           </div>
         )}
         
-        <button className="exit-button" onClick={onBack}>
-          EXIT
-        </button>
+        <div className="header-buttons">
+          <button 
+            className="help-button" 
+            onClick={() => setShowRules(true)}
+            title="Show game rules and controls"
+          >
+            ?
+          </button>
+          <button className="exit-button" onClick={onBack}>
+            EXIT
+          </button>
+        </div>
       </div>
       
       <div className="game-board" style={{
@@ -541,7 +548,7 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
           <div className="game-message">
             <h2>GET READY!</h2>
             <div className="controls-info">
-              {superHardMode ? (
+              {settings.randomizeKeys ? (
                 <div>
                   <p>SUPER HARD MODE ACTIVATED!</p>
                   <p>Controls will change every 10 seconds</p>
@@ -554,6 +561,82 @@ const SnakeGame = ({ level, gameMode, settings, superHardMode, onLevelComplete, 
               )}
             </div>
             <p className="start-instruction">Press SPACE to start</p>
+          </div>
+        </div>
+      )}
+      
+      {showRules && (
+        <div className="game-overlay">
+          <div className="rules-modal">
+            <h2>GAME RULES & CONTROLS</h2>
+            
+            <div className="rules-section">
+              <h3>🎯 OBJECTIVE</h3>
+              <p>Eat food to grow your snake and reach the target score to win!</p>
+            </div>
+            
+            <div className="rules-section">
+              <h3>🎮 CONTROLS</h3>
+              {settings.randomizeKeys ? (
+                <div className="controls-info">
+                  <p><strong>RANDOMIZE KEYS MODE:</strong> Controls change every 10 seconds!</p>
+                  <p>Watch for the notification showing current controls.</p>
+                  {gameMode === '2p' && <p>Both players get randomized controls.</p>}
+                </div>
+              ) : (
+                <div className="controls-info">
+                  <div className="player-controls">
+                    <strong>Player 1:</strong> W/A/S/D (Up/Left/Down/Right)
+                  </div>
+                  {gameMode === '2p' && (
+                    <div className="player-controls">
+                      <strong>Player 2:</strong> Arrow Keys (↑/←/↓/→)
+                    </div>
+                  )}
+                  <div className="game-controls">
+                    <strong>Game:</strong> ESC = Exit to menu
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div className="rules-section">
+              <h3>� POWERUPS</h3>
+              <div className="food-info">
+                <p>• Normal Food: +10 points 🍒</p>
+                <p>• Special Food: +25 points 🍎</p>
+                <p>• Power-Up: +50 points 💎 (randomly spawned)</p>
+                <p>Collect food to grow your snake and score points!</p>
+              </div>
+            </div>
+            
+            <div className="rules-section">
+              <h3>🏆 WIN CONDITIONS</h3>
+              <div className="win-conditions">
+                {gameMode === '1p' ? (
+                  <p>Reach the target score shown at the top of the screen!</p>
+                ) : (
+                  <>
+                    <p><strong>2-Player Mode:</strong></p>
+                    <p>• First to reach target score wins</p>
+                    <p>• If opponent crashes, you win instantly</p>
+                  </>
+                )}
+              </div>
+            </div>
+            
+            <div className="rules-section">
+              <h3>💥 LOSE CONDITIONS</h3>
+              <ul className="lose-conditions">
+                <li>Hit any wall or screen edge</li>
+                <li>Hit your own body</li>
+                {gameMode === '2p' && <li>Hit the other player's snake</li>}
+              </ul>
+            </div>
+            
+            <button className="close-rules-button" onClick={() => setShowRules(false)}>
+              GOT IT!
+            </button>
           </div>
         </div>
       )}

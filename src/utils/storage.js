@@ -15,12 +15,11 @@ export const getGameSettings = () => {
   const saved = localStorage.getItem('gameSettings')
   return saved ? JSON.parse(saved) : {
     speed: 200,
-    gridSize: 20,
     maxFruits: 1,
-    wallCollision: true,
+    randomizeKeys: false,
     powerUps: true,
     difficulty: 'medium',
-    theme: 'retro'
+    theme: 'modern'
   }
 }
 

@@ -18,24 +18,25 @@ const LevelSelector = ({ onLevelSelect, onBack, unlockedLevels, customLevels, ga
         onClick={() => isUnlocked && onLevelSelect(level)}
       >
         <div className="level-header">
-          <h3 className="level-name retro-text">{level.name}</h3>
+          <h3 className="level-name">{level.name}</h3>
           <div className={`difficulty-badge ${level.difficulty.toLowerCase()}`}>
             {level.difficulty}
           </div>
         </div>
         
         <div className="level-preview">
-          <div className="grid-preview">
-            {level.grid.slice(0, 10).map((row, y) => (
-              <div key={y} className="preview-row">
-                {row.slice(0, 10).split('').map((cell, x) => (
-                  <div 
-                    key={x} 
-                    className={`preview-cell ${cell === '#' ? 'wall' : 'empty'}`}
-                  />
-                ))}
-              </div>
-            ))}
+          <div className="grid-preview" style={{
+            gridTemplateColumns: `repeat(${level.grid[0] ? level.grid[0].length : 30}, 1fr)`,
+            gridTemplateRows: `repeat(${level.grid.length}, 1fr)`
+          }}>
+            {level.grid.map((row, y) =>
+              row.split('').map((cell, x) => (
+                <div 
+                  key={`${y}-${x}`} 
+                  className={`preview-cell ${cell === '#' ? 'wall' : 'empty'}`}
+                />
+              ))
+            )}
           </div>
         </div>
         
@@ -64,7 +65,7 @@ const LevelSelector = ({ onLevelSelect, onBack, unlockedLevels, customLevels, ga
         <button className="back-button" onClick={onBack}>
           ← BACK
         </button>
-        <h2 className="screen-title retro-text">
+        <h2 className="screen-title">
           SELECT LEVEL - {gameMode === '1p' ? '1 PLAYER' : '2 PLAYERS'}
         </h2>
       </div>
@@ -80,7 +81,7 @@ const LevelSelector = ({ onLevelSelect, onBack, unlockedLevels, customLevels, ga
           className={`tab-button ${selectedCategory === 'custom' ? 'active' : ''}`}
           onClick={() => setSelectedCategory('custom')}
         >
-          CUSTOM LEVELS ({customLevels.length})
+          PLAYGROUND ({customLevels.length})
         </button>
       </div>
       
@@ -100,7 +101,7 @@ const LevelSelector = ({ onLevelSelect, onBack, unlockedLevels, customLevels, ga
             ) : (
               <div className="no-custom-levels">
                 <div className="empty-state">
-                  <h3>NO CUSTOM LEVELS</h3>
+                  <h3>NO PLAYGROUND LEVELS</h3>
                   <p>Create your own levels in the Level Editor!</p>
                 </div>
               </div>

@@ -156,6 +156,33 @@ const LevelEditor = ({ onSave, onBack }) => {
     linkElement.click()
   }
 
+  const copyJSON = async () => {
+    const level = {
+      id: `custom-${Date.now()}`,
+      name: levelName.trim() || 'Untitled Level',
+      description: levelDescription.trim() || 'Custom level',
+      difficulty,
+      grid
+    }
+    
+    const jsonString = JSON.stringify(level, null, 2)
+    
+    try {
+      await navigator.clipboard.writeText(jsonString)
+      // Could add a temporary notification here
+      console.log('Level JSON copied to clipboard!')
+    } catch (err) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = jsonString
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      console.log('Level JSON copied to clipboard!')
+    }
+  }
+
   const renderCell = (x, y) => {
     const cell = grid[y][x]
     const isEditable = !(x === 0 || x === gridSize - 1 || y === 0 || y === gridSize - 1)
@@ -181,7 +208,7 @@ const LevelEditor = ({ onSave, onBack }) => {
         <button className="back-button" onClick={onBack}>
           ← BACK
         </button>
-        <h2 className="editor-title retro-text">LEVEL EDITOR</h2>
+        <h2 className="editor-title">LEVEL EDITOR</h2>
         <button 
           className="preview-button"
           onClick={() => setShowPreview(!showPreview)}
@@ -266,6 +293,9 @@ const LevelEditor = ({ onSave, onBack }) => {
             </button>
             <button className="export-button" onClick={exportLevel}>
               EXPORT JSON
+            </button>
+            <button className="copy-button" onClick={copyJSON}>
+              COPY JSON
             </button>
           </div>
         </div>

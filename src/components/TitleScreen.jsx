@@ -34,13 +34,10 @@ const TitleScreen = ({ onScreenChange }) => {
       </div>
       
       <div className={`title-container ${animationPhase >= 1 ? 'fade-in' : ''}`}>
-        <h1 className="game-title retro-text">
+        <h1 className="game-title">
           <span className="title-word">SNAKE</span>
           <span className="title-word">ULTIMATE</span>
         </h1>
-        <div className="subtitle retro-text">
-          THE ULTIMATE RETRO EXPERIENCE
-        </div>
       </div>
       
       <div className={`menu-container ${animationPhase >= 1 ? 'slide-up' : ''}`}>

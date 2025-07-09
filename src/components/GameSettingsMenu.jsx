@@ -25,12 +25,15 @@ const GameSettingsMenu = ({ settings, onSettingsChange, onBack }) => {
           <button className="back-button" onClick={onBack}>
             ← BACK
           </button>
-          <h2 className="settings-title retro-text">GAME SETTINGS</h2>
+          <h2 className="settings-title">GAME SETTINGS</h2>
         </div>
         
         <div className="settings-grid">
           <div className="setting-group">
-            <label className="setting-label">SPEED</label>
+            <label className="setting-label">
+              SPEED
+              <span className="help-icon" title="Controls how fast the snake moves">?</span>
+            </label>
             <select 
               className="setting-select"
               value={settings.speed} 
@@ -45,21 +48,25 @@ const GameSettingsMenu = ({ settings, onSettingsChange, onBack }) => {
           </div>
 
           <div className="setting-group">
-            <label className="setting-label">GRID SIZE</label>
+            <label className="setting-label">
+              RANDOMIZE KEYS
+              <span className="help-icon" title="Keys change every 10 seconds during gameplay">?</span>
+            </label>
             <select 
               className="setting-select"
-              value={settings.gridSize} 
-              onChange={(e) => handleChange('gridSize', parseInt(e.target.value))}
+              value={settings.randomizeKeys ? 'true' : 'false'} 
+              onChange={(e) => handleChange('randomizeKeys', e.target.value === 'true')}
             >
-              <option value={15}>SMALL (15x15)</option>
-              <option value={20}>MEDIUM (20x20)</option>
-              <option value={25}>LARGE (25x25)</option>
-              <option value={30}>EXTRA LARGE (30x30)</option>
+              <option value="false">DISABLED</option>
+              <option value="true">ENABLED</option>
             </select>
           </div>
 
           <div className="setting-group">
-            <label className="setting-label">MAX FRUITS</label>
+            <label className="setting-label">
+              MAX FRUITS
+              <span className="help-icon" title="Number of fruits on screen at once">?</span>
+            </label>
             <select 
               className="setting-select"
               value={settings.maxFruits} 
@@ -73,7 +80,10 @@ const GameSettingsMenu = ({ settings, onSettingsChange, onBack }) => {
           </div>
 
           <div className="setting-group">
-            <label className="setting-label">DIFFICULTY</label>
+            <label className="setting-label">
+              DIFFICULTY
+              <span className="help-icon" title="AI difficulty for future features">?</span>
+            </label>
             <select 
               className="setting-select"
               value={settings.difficulty} 
@@ -87,29 +97,20 @@ const GameSettingsMenu = ({ settings, onSettingsChange, onBack }) => {
           </div>
 
           <div className="setting-group">
-            <label className="setting-label">THEME</label>
+            <label className="setting-label">
+              THEME
+              <span className="help-icon" title="Visual theme for the game">?</span>
+            </label>
             <select 
               className="setting-select"
               value={settings.theme} 
               onChange={(e) => handleChange('theme', e.target.value)}
             >
-              <option value="retro">RETRO</option>
+              <option value="modern">MODERN</option>
               <option value="beige">BEIGE</option>
               <option value="green">GREEN</option>
               <option value="matte">MATTE</option>
             </select>
-          </div>
-
-          <div className="setting-group checkbox-group">
-            <label className="checkbox-label">
-              <input 
-                type="checkbox" 
-                checked={settings.wallCollision}
-                onChange={(e) => handleChange('wallCollision', e.target.checked)}
-              />
-              <span className="checkbox-custom"></span>
-              WALL COLLISION
-            </label>
           </div>
 
           <div className="setting-group checkbox-group">
@@ -121,6 +122,7 @@ const GameSettingsMenu = ({ settings, onSettingsChange, onBack }) => {
               />
               <span className="checkbox-custom"></span>
               POWER-UPS
+              <span className="help-icon" title="Enable gem power-ups for bonus points">?</span>
             </label>
           </div>
         </div>

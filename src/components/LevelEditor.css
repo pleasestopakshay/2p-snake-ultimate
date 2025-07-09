@@ -219,6 +219,22 @@
   color: #1a202c;
 }
 
+.copy-button {
+  padding: 12px;
+  background: transparent;
+  border: 2px solid #ed8936;
+  color: #ed8936;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.copy-button:hover {
+  background: #ed8936;
+  color: #1a202c;
+}
+
 .editor-main {
   flex: 1;
   display: flex;
